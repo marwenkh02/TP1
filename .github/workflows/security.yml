@@ -1,0 +1,50 @@
+name: Security Scan
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  push:
+    branches:
+      - main
+
+jobs:
+  security-scan:
+    name: Run Security Scans
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run SonarQube Security Scan
+        if: env.SONAR_TOKEN != ''
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          docker run --rm -v $(pwd):/usr/src sonarsource/sonar-scanner-cli
+
+      - name: Run OWASP Dependency Check
+        run: |
+          docker run --rm -v $(pwd):/src owasp/dependency-check --scan /src
+
+      - name: Store scan results
+        run: |
+          mkdir -p reports
+          mv dependency-check-report.html reports/ || true
+          mv sonar-report.html reports/ || true
+
+      - name: Upload Security Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-reports
+          path: reports/
