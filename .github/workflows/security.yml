@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
   security-scan:
     runs-on: ubuntu-latest
+
     steps:
       # Step 1: Checkout the code
       - name: Checkout code
@@ -16,29 +17,21 @@ jobs:
         with:
           python-version: '3.x'
 
-      # Step 3: Install Java (needed for OWASP Dependency-Check)
-      - name: Install Java
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-11-jre  # Install Java (required for OWASP Dependency-Check)
-
-      # Step 4: Install OWASP Dependency-Check
+      # Step 3: Install OWASP Dependency-Check
       - name: Install OWASP Dependency-Check
         run: |
-          # Download and unzip OWASP Dependency-Check
-          wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
-          unzip dependency-check-8.4.0-release.zip
-          export PATH=$PATH:$(pwd)/dependency-check-8.4.0/bin  # Add Dependency-Check to PATH
+          sudo apt-get install -y owasp-dependency-check  # Install Dependency-Check
 
-      # Step 5: Install SonarQube Scanner
+      # Step 4: Install SonarQube Scanner
       - name: Install SonarQube Scanner
         run: |
-          # Download SonarQube Scanner (latest stable version)
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
-          unzip sonar-scanner-cli-4.7.0.2747-linux.zip
-          export PATH=$PATH:$(pwd)/sonar-scanner-cli-4.7.0.2747-linux/bin  # Add SonarQube Scanner to PATH
+          # Download and unzip SonarQube Scanner
+          wget https://github.com/SonarSource/sonar-scanner-cli/releases/download/4.7.0.2747/sonar-scanner-4.7.0.2747-linux.zip
+          unzip sonar-scanner-4.7.0.2747-linux.zip
+          sudo mv sonar-scanner-4.7.0.2747-linux /opt/sonar-scanner
+          sudo ln -s /opt/sonar-scanner/bin/sonar-scanner /usr/local/bin/sonar-scanner
 
-      # Step 6: Run SonarQube Scanner
+      # Step 5: Run SonarQube Scanner
       - name: Run SonarQube Scanner
         run: |
           sonar-scanner \
@@ -47,12 +40,12 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}  # Ensure SONAR_TOKEN is set in GitHub secrets
 
-      # Step 7: Run OWASP Dependency-Check
+      # Step 6: Run OWASP Dependency-Check
       - name: Run OWASP Dependency-Check
         run: |
           dependency-check --project your_project_name --scan . --out .  # Scan for vulnerabilities in dependencies
 
-      # Step 8: Save the Reports as Artifacts
+      # Step 7: Save the Reports as Artifacts
       - name: Upload SonarQube Report as Artifact
         uses: actions/upload-artifact@v4
         with:
