@@ -36,8 +36,13 @@ jobs:
         run: |
           # Download the latest SonarQube Scanner
           wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
-          unzip sonar-scanner-cli-4.7.0.2747-linux.zip
-          sudo mv sonar-scanner-cli-4.7.0.2747-linux /opt/sonar-scanner
+          unzip sonar-scanner-cli-4.7.0.2747-linux.zip -d sonar-scanner
+
+          # Check if unzip was successful and list files
+          ls -la sonar-scanner
+
+          # Move the extracted folder to /opt
+          sudo mv sonar-scanner/sonar-scanner-cli-4.7.0.2747-linux /opt/sonar-scanner
           sudo ln -s /opt/sonar-scanner/bin/sonar-scanner /usr/local/bin/sonar-scanner
 
       # Step 6: Run SonarQube Scanner
