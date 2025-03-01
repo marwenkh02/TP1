@@ -1,0 +1,36 @@
+name: CodeQL Analysis
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull request to the main branch
+
+jobs:
+  codeql:
+    name: Analyze code with CodeQL
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3  # This checks out the repository code
+
+      - name: Set up CodeQL
+        uses: github/codeql-action/setup-codeql@v2  # This sets up CodeQL
+
+      - name: Initialize CodeQL database
+        run: |
+          # Initialize a CodeQL database for your codebase
+          codeql database create codeql-db --language=javascript
+
+      - name: Run CodeQL analysis
+        run: |
+          # Run CodeQL analysis
+          codeql analyze codeql-db --format=sarif-latest --output=codeql-results.sarif
+
+      - name: Upload CodeQL SARIF results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: codeql-results.sarif  # Upload the results for GitHub's security tab
