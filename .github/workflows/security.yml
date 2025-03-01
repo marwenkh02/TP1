@@ -1,50 +1,51 @@
-name: Security Scan
+name: Security Scanning Pipeline
 
-on:
-  pull_request:
-    branches:
-      - main
-      - dev
-  push:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   security-scan:
-    name: Run Security Scans
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      # Step 1: Checkout the code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      # Step 2: Set up Python (ensure Python 3.x is used)
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          node-version: 18
+          python-version: '3.x'
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run SonarQube Security Scan
-        if: env.SONAR_TOKEN != ''
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # Step 3: Install dependencies for SonarQube Scanner and OWASP Dependency-Check
+      - name: Install Dependencies
         run: |
-          docker run --rm -v $(pwd):/usr/src sonarsource/sonar-scanner-cli
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Ensure your requirements.txt is included for Python dependencies
+          sudo apt-get install -y owasp-dependency-check  # Install Dependency-Check
 
-      - name: Run OWASP Dependency Check
+      # Step 4: Run SonarQube Scanner
+      - name: Run SonarQube Scanner
         run: |
-          docker run --rm -v $(pwd):/src owasp/dependency-check --scan /src
+          sonar-scanner \
+            -Dsonar.projectKey=your_project_key \
+            -Dsonar.sources=./ \
+            -Dsonar.host.url=https://your_sonarqube_instance \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}  # Ensure SONAR_TOKEN is set in GitHub secrets
 
-      - name: Store scan results
+      # Step 5: Run OWASP Dependency-Check
+      - name: Run OWASP Dependency-Check
         run: |
-          mkdir -p reports
-          mv dependency-check-report.html reports/ || true
-          mv sonar-report.html reports/ || true
+          dependency-check --project your_project_name --scan . --out .  # Scan for vulnerabilities in dependencies
 
-      - name: Upload Security Reports
+      # Step 6: Save the Reports as Artifacts
+      - name: Upload SonarQube Report as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: security-reports
-          path: reports/
+          name: sonar-report
+          path: ./sonar-report.json  # Adjust the report file location based on your setup
+
+      - name: Upload Dependency-Check Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: ./dependency-check-report.html  # Adjust based on Dependency-Check output location
