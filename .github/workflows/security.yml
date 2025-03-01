@@ -16,18 +16,19 @@ jobs:
         with:
           python-version: '3.x'
 
-      # Step 3: Install OWASP Dependency-Check (if using OWASP Dependency-Check)
+      # Step 3: Install Java (needed for OWASP Dependency-Check)
+      - name: Install Java
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jre  # Install Java (required for OWASP Dependency-Check)
+
+      # Step 4: Install OWASP Dependency-Check
       - name: Install OWASP Dependency-Check
         run: |
-          sudo apt-get install -y owasp-dependency-check  # Install Dependency-Check
-
-      # Step 4: Install SonarQube Scanner
-      - name: Install SonarQube Scanner
-        run: |
-          # Download and install SonarQube scanner
-          curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
-          unzip sonar-scanner-cli.zip
-          export PATH=$PATH:$(pwd)/sonar-scanner-4.8.0.2856-linux/bin
+          # Download and unzip OWASP Dependency-Check
+          wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
+          unzip dependency-check-8.4.0-release.zip
+          export PATH=$PATH:$(pwd)/dependency-check-8.4.0/bin  # Add Dependency-Check to PATH
 
       # Step 5: Run SonarQube Scanner (replace your project details here)
       - name: Run SonarQube Scanner
