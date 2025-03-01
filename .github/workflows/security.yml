@@ -33,10 +33,10 @@ jobs:
       # Step 5: Install SonarQube Scanner
       - name: Install SonarQube Scanner
         run: |
-          # Download SonarQube Scanner
-          wget https://github.com/SonarSource/sonar-scanner-cli/releases/download/4.7.0.2747/sonar-scanner-4.7.0.2747-linux.zip
-          unzip sonar-scanner-4.7.0.2747-linux.zip
-          export PATH=$PATH:$(pwd)/sonar-scanner-4.7.0.2747-linux/bin  # Add SonarQube Scanner to PATH
+          # Download SonarQube Scanner (latest stable version)
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
+          unzip sonar-scanner-cli-4.7.0.2747-linux.zip
+          export PATH=$PATH:$(pwd)/sonar-scanner-cli-4.7.0.2747-linux/bin  # Add SonarQube Scanner to PATH
 
       # Step 6: Run SonarQube Scanner
       - name: Run SonarQube Scanner
