@@ -42,9 +42,9 @@ jobs:
       - name: Run SonarQube Scanner
         run: |
           sonar-scanner \
-            -Dsonar.projectKey=your_project_key \
+            -Dsonar.projectKey=marwenkh02_TP1 \
             -Dsonar.sources=./ \
-            -Dsonar.host.url=https://your_sonarqube_instance \
+            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}  # Ensure SONAR_TOKEN is set in GitHub secrets
 
       # Step 7: Run OWASP Dependency-Check
