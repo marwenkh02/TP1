@@ -1,29 +1,34 @@
-# CodeScanAI 🚀🔍
+# CodeScanAI
 
-**AI-Driven Static Code Analysis for GitHub Repositories**
+**AI-Enhanced Static Code Analyzer for GitHub Repositories**
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Python](https://img.shields.io/badge/python-3.10+-blue)
-![Flask](https://img.shields.io/badge/flask-2.x-green)
-![GitHub API](https://img.shields.io/badge/GitHub-API-orange)
-
-CodeScanAI is a SaaS-style backend service that connects to GitHub, lists repositories and files, scans code for vulnerabilities using a Static Application Security Testing (SAST) engine, and provides developers with actionable security insights. It's built using Python, Flask, and integrates directly with GitHub via OAuth and PAT.
-
----
-
-## ✨ Features
-
-- 🔐 **GitHub OAuth + Token Auth**
-- 🧠 **AI/Rule-Based SAST Vulnerability Detection**
-- 📂 **Repository File Tree Fetching**
-- 📊 **Real-time Dashboard Metrics**
-- 🚨 **GitHub Security Alert Integration**
-- 📄 **Auto-generated README analysis**
-- 📦 **Pull Request Fix Generator**
-- 🧾 **Rate Limiting + CORS**
-- 🔁 **Token-based Session Management**
+![License](https://img.shields.io/badge/license-MIT-black)
+![Python](https://img.shields.io/badge/Python-3.10+-black)
+![Flask](https://img.shields.io/badge/Flask-2.x-black)
+![GitHub API](https://img.shields.io/badge/GitHub-API-black)
+![SAST Engine](https://img.shields.io/badge/SAST-Custom-black)
 
 ---
 
-## 📁 Project Structure
+## Overview
+
+**CodeScanAI** is a backend-powered platform that analyzes GitHub repositories for security vulnerabilities using a custom Static Application Security Testing (SAST) engine. It features GitHub integration, a live metrics dashboard, repository file exploration, and PR generation for automated fixes.
+
+Designed for developers and security teams seeking seamless, automated insights directly from their GitHub repositories.
+
+---
+
+## Features
+
+- GitHub OAuth and Personal Access Token (PAT) authentication
+- SAST-based vulnerability detection with clear severity reports
+- Repository file tree exploration and README insights
+- Auto-pull request generation to fix vulnerabilities
+- Dashboard for code quality and security metrics
+- CORS configuration and rate limiting for secure API usage
+- Modular Flask API backend
+
+---
+
+## Project Structure
 
