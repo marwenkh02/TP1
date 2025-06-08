@@ -1,6 +1,3 @@
-Django==3.2.0
-requests>=2.25.0
-flask<2.0.0
-# This is a comment
--e git+https://github.com/some/package.git
---index-url https://pypi.org/simple/
+Django==3.2.0  # Known vulnerable version
+requests==2.25.0
+flask==1.1.2
