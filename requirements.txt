@@ -1,6 +1,6 @@
-numpy==1.18.0             # Released Jan 2020 — known CVEs in older versions
-opencv-python==4.2.0.32   # Released early 2020 — outdated build
-matplotlib==3.1.1         # Released Jul 2019 — several security and performance fixes since
-Pillow==6.2.1             # Released Oct 2019 — known vulnerabilities (e.g., buffer overflows)
-scipy==1.4.1              # Released Dec 2019 — outdated and security-risky
-scikit-learn==0.22.1      # Released Jan 2020 — lacks many critical bug fixes
+Django==3.2.0
+requests>=2.25.0
+flask<2.0.0
+# This is a comment
+-e git+https://github.com/some/package.git
+--index-url https://pypi.org/simple/
